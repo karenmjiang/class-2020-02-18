@@ -1,0 +1,41 @@
+---
+title: "Enrollment"
+author: "Karen Jiang"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(reprex)
+library(gt)
+
+data <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", 
+                   skip = 3, 
+                   col_names = TRUE) %>%
+  clean_names() %>%
+  filter(! is.na(course_name))
+
+```
+
+```{r}
+# Five departments with the most students enrolled this semester
+
+data %>% select(course_department, total) %>%
+  group_by(course_department) %>%
+  summarize(total_students = sum(total)) %>%
+  arrange(desc(total_students)) %>%
+  head(5)
+
+data %>% select(course_department, u_grad) %>%
+  group_by(course_department) %>%
+  summarize(total_u_students = sum(u_grad)) %>%
+  arrange(desc(total_u_students)) %>%
+  head(5)
+
+```
+
