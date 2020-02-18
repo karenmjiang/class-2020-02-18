@@ -20,6 +20,8 @@ data <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx",
   clean_names() %>%
   filter(! is.na(course_name))
 
+data
+
 ```
 
 ```{r}
@@ -37,5 +39,5 @@ data %>% select(course_department, u_grad) %>%
   arrange(desc(total_u_students)) %>%
   head(5)
 
-```
+
 

@@ -1,0 +1,16 @@
+---
+title: "census"
+author: "Karen Jiang"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidycensus)
+library(tidyverse)
+
+census_api_key("6c3bf75163fa1ef1eb5aff46febb50bfb040b127")
+```
+
