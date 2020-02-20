@@ -14,28 +14,34 @@ library(tidyverse)
 census_api_key("6c3bf75163fa1ef1eb5aff46febb50bfb040b127")
 ```
 
-```{r}
+
+```{r, include=FALSE}
+
 racevars <- c(White = "B02001_002", 
               Black = "B02001_003", 
               Asian = "B02001_005",
               Hispanic = "B03003_003")
 
-harris <- get_acs(geography = "tract",
+los_angeles <- get_acs(geography = "tract",
                   variables = racevars, 
                   year = 2018,
-                  state = "TX",
-                  county = "Harris County",
+                  state = "CA",
+                  county = "Los Angeles County",
                   geometry = TRUE,
                   summary_var = "B02001_001") 
 
-harris %>%
+```
+
+```{r maps, echo=FALSE}
+
+los_angeles %>%
   mutate(Percent = 100 * (estimate / summary_est)) %>%
   ggplot(aes(fill = Percent, color = Percent)) +
   facet_wrap(~ variable) +
   geom_sf() +
   scale_fill_viridis_c(direction = -1) +
   scale_color_viridis_c(direction = -1) +
-  labs(title = "Racial geography of Harris County, Texas",
+  labs(title = "Racial geography of Los Angeles County, CA",
        caption = "Source: American Community Survey 2014-2018") +
   theme_void()
 ```
