@@ -4,7 +4,6 @@ author: "Karen Jiang"
 date: "2/18/2020"
 output: html_document
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -14,30 +13,36 @@ library(janitor)
 library(reprex)
 library(gt)
 
-data <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", 
+spring_2020 <- read_excel("data/class_enrollment_summary_by_term2.18.20.xlsx", 
                    skip = 3, 
                    col_names = TRUE) %>%
   clean_names() %>%
   filter(! is.na(course_name))
 
-data
+
+fall_2019 <- read_excel("data/class_enrollment_summary_by_term_12.20.19.xlsx",
+                        skip = 3,
+                        col_names = TRUE) %>%
+  clean_names() %>%
+  filter(! is.na(course_name))
+
 
 ```
 
 ```{r}
 # Five departments with the most students enrolled this semester
 
-data %>% select(course_department, total) %>%
+spring_2020 %>% select(course_department, total) %>%
   group_by(course_department) %>%
   summarize(total_students = sum(total)) %>%
   arrange(desc(total_students)) %>%
   head(5)
 
-data %>% select(course_department, u_grad) %>%
-  group_by(course_department) %>%
-  summarize(total_u_students = sum(u_grad)) %>%
-  arrange(desc(total_u_students)) %>%
-  head(5)
 
+glimpse(spring_2020)
 
+new_courses <- spring_2020 %>% 
+  anti_join(fall_2019, by="course_id")
 
+glimpse(new_courses)
+``` 
